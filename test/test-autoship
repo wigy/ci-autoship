@@ -18,6 +18,8 @@ run() {
   [[ -f .autoship/repos/local/config ]]
   ./ci help > /dev/null
   ./ci help repo > /dev/null
+  ./ci repo add git@github.com:wigy/ci-autoship.git > /dev/null 2>&1
+  ./ci repo ls > /dev/null
 
   set +x
   echo

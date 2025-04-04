@@ -19,7 +19,7 @@ parse_args() {
       if [[ $# -lt 2 ]]; then
         return 1
       fi
-      export REPO=$2
+      export REPO_URL=$2
       export BRANCH=$3
     ;;
     ls)
@@ -40,7 +40,7 @@ prepare() {
       repo-list
     ;;
     add)
-      repo-create "$REPO" "$BRANCH"
+      repo-create "$REPO_URL" "$BRANCH"
     ;;
   esac
 }

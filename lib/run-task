@@ -65,6 +65,7 @@ prepare
 
 # Set runtime variables, if needed.
 if [[ ! -z "$REPO" ]]; then
+echo REPO$REPO
   RUNTIME_CONFIG="--env-file $WORKDIR/.autoship/repos/$REPO/config"
 fi
 
