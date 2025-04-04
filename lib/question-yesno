@@ -17,7 +17,6 @@ while true; do
       default=yes
       color-print prompt "[YES]/[no]?" >&2
     ;;
-
     no)
       default=no
       color-print prompt "[yes]/[NO]?" >&2
