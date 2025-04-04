@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# Log a line with timestamp.
+#
+#   log-info <text>
+#
+
+color-print info "`date +'%F %T'`: $*"

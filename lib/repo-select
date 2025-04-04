@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# Define REPO and BRANCH variables if not defined based on environment.
+#
+#   repo-select [<variable-prefix>]
+#
+
+set -e
+
+# Direct environment.
+if [[ ! -z "$REPO" ]]; then
+  if [[ -z "$BRANCH" ]]; then
+    export BRANCH=master
+  fi
+else
+  # TODO: Use env hint.
+  # TODO: Make assumption if only one repo.
+  error-exit NOT_FOUND "Cannot find a repository and/or branch for working (maybe define env REPO and BRANCH)."
+fi
+
+# Check existence.
+if ! repo-exists $REPO; then
+  error-exit NOT_FOUND "There is no repo '$REPO' checked out."
+fi
+if ! repo-exists $REPO $BRANCH; then
+  error-exit NOT_FOUND "There is no branch '$BRANCH' of '$REPO' checked out."
+fi

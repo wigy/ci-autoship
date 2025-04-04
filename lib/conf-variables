@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# List configuration variables found.
+#
+#   conf-variables
+#
+
+set -e
+
+echo `grep ^[A-Z] "$WORKDIR/.autoship/config" | sed -e 's/^\([A-Z]\+\)=.*/\1/'`

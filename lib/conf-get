@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# Fetch and print variable value from the configuration.
+#
+#   conf-get <name> [<default>]
+#
+
+set -e
+
+if grep -q "^$1=" "$WORKDIR/.autoship/config"; then
+  grep "^$1=" < "$WORKDIR/.autoship/config" | sed -e "s/^$1=//"
+else
+  echo "$2"
+fi

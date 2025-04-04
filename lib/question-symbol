@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Print a question and wait for a symbol to be answered.
+#
+#   question-dir <text> [<default>]
+#
+
+set -e
+
+while true; do
+  color-print question $1 >&2
+  if [[ ! -z "$2" ]]; then
+    color-print question Press enter to accept the default. >&2
+    color-print prompt "[$2]" >&2
+  fi
+  read ans
+
+  if [[ -z "$ans" ]]; then
+    result=$2
+  else
+    result=$ans
+  fi
+
+  bad=`echo "$result" | sed -e 's/[a-z0-9_]//g'`
+  if [[ -z "$bad" ]]; then
+    echo $result
+    exit
+  else
+    color-print error "Must not have any other characters than a-z, 0-9 or _." >&2
+  fi
+done

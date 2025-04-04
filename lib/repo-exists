@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# Check if the repoistory (and branch) exists as its return value.
+#
+#   repo-exist <repo-name> [<branch>]
+#
+
+set -e
+
+if ls $WORKDIR/.autoship/repos/$1/config > /dev/null 2>&1; then
+  if [[ -z "$2" ]]; then
+    exit 0
+  else
+    if ls $WORKDIR/.autoship/repos/$1/branches/$2 > /dev/null 2>&1; then
+      exit 0
+    else
+      exit 1
+    fi
+  fi
+else
+  exit 1
+fi

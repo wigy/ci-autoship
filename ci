@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# This is the entry point for CI Autoship. Link it to the root directory of your project or use directly.
+#
+
+# TODO: This does not resolve correcly.
+current_ci_script=`dirname "${BASH_SOURCE[0]}"`
+export WORKDIR=`realpath "$current_ci_script"`
+
+original_ci_script=`readlink -f $0`
+export ROOTDIR=`dirname "$original_ci_script"`
+
+export PATH="$ROOTDIR/lib:$PATH"
+export PLATFORM=local
+
+if [[ "$WORKDIR" == "$ROOTDIR" ]]; then
+  export MODE=ci
+else
+  export MODE=devel
+fi
+
+check-installation
+
+for v in `conf-variables`; do
+  export $v=`conf-get $v`
+done
+
+if [[ -z "$*" ]]; then
+  run-task help
+else
+  run-task "$@"
+fi

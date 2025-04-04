@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# List named repos in this project.
+#
+#   repo-list
+#
+
+set -e
+
+repos=()
+for conf in $WORKDIR/.autoship/repos/*/config; do
+  dir=`dirname $conf`
+  repo=`basename $dir`
+  if [[ "$repo" != '*' ]]; then
+    repos+=("$repo")
+  fi
+done
+
+echo ${repos[@]}

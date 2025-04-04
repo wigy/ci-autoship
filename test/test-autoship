@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# Run full testing to the Autoship.
+#
+
+set -e
+
+ci_script=`dirname "${BASH_SOURCE[0]}"`
+export WORKDIR=`realpath "$ci_script"`
+
+run() {
+  ln -sf $WORKDIR/../ci $WORKDIR
+  rm -fr $WORKDIR/.autoship
+  set -x
+  cd $WORKDIR
+  ./ci > /dev/null
+  [[ -f .autoship/config ]]
+  [[ -f .autoship/repos/local/config ]]
+  ./ci help > /dev/null
+  ./ci help repo > /dev/null
+
+  set +x
+  echo
+  echo -e "\e[32mSUCCESS\e[0m"
+  echo
+}
+
+echo "Testing...."
+run

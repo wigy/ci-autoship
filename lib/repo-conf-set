@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Set repository specific configuration variable value.
+#
+#   conf-set <repo> <name> <value>
+#
+
+set -e
+
+log-info "Setting $2='$3' for repository '$1'."
+
+if grep -q "^$2=" "$WORKDIR/.autoship/repos/$1/config"; then
+  (grep -v "^$2=" < "$WORKDIR/.autoship/repos/$1/config"; echo "$2=$3") > "$WORKDIR/.autoship/repos/$1/config.new"
+  mv "$WORKDIR/.autoship/repos/$1/config.new" "$WORKDIR/.autoship/repos/$1/config"
+else
+  echo "$2=$3" >> "$WORKDIR/.autoship/repos/$1/config"
+fi

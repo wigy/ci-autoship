@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Set configuration variable value.
+#
+#   conf-set <name> <value>
+#
+
+set -e
+
+log-info "Setting configuration $1='$2'."
+
+if grep -q "^$1=" "$WORKDIR/.autoship/config"; then
+  (grep -v "^$1=" < "$WORKDIR/.autoship/config"; echo "$1=$2") > "$WORKDIR/.autoship/config.new"
+  mv "$WORKDIR/.autoship/config.new" "$WORKDIR/.autoship/config"
+else
+  echo "$1=$2" >> "$WORKDIR/.autoship/config"
+fi

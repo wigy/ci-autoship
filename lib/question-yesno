@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# Print a question and wait for either 'yes' or 'no' answer.
+#
+#   question-yesno <text> [<default>]
+#
+
+set -e
+
+while true; do
+  color-print question $1 >&2
+
+  default=''
+
+  case "$2" in
+    yes)
+      default=yes
+      color-print prompt "[YES]/[no]?" >&2
+    ;;
+
+    no)
+      default=no
+      color-print prompt "[yes]/[NO]?" >&2
+    ;;
+    '')
+      color-print prompt "[yes]/[no]?" >&2
+    ;;
+
+    *)
+      error-exit INVALID_ARGS "Usage: question-yesno <text> [yes|no]"
+    ;;
+  esac
+
+  read ans
+
+  if [[ -z "$ans" ]]; then
+    ans=$default
+  fi
+
+  if [[ "$ans" == yes ]]; then
+    exit 0
+  fi
+  if [[ "$ans" == y ]]; then
+    exit 0
+  fi
+  if [[ "$ans" == no ]]; then
+    exit -1
+  fi
+  if [[ "$ans" == n ]]; then
+    exit -1
+  fi
+
+  color-print error "Please answer either 'yes' or 'no'!" >&2
+  echo
+done

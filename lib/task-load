@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# Load task functions if it exists.
+#
+#   . task-load <task>
+#
+
+set -e
+
+if task-exists $1; then
+  . $ROOTDIR/modules/*/$1.sh
+else
+  error-exit NOT_FOUND "Cannot find task '$1' for loading."
+fi

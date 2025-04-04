@@ -1,0 +1,52 @@
+#!/bin/bash
+#
+# CI execution counterpart inside the docker.
+#
+
+set -e
+
+export WORKDIR=/home/work
+export ROOTDIR=/home/root
+export DATADIR=/home/data
+
+export PATH="$ROOTDIR/lib:$PATH"
+
+log-debug "Running task $* in $PLATFORM."
+
+if [[ "$PLATFORM" != docker ]]; then
+  error-exit INVALID_ARGS "This script $0 can be executed only in docker."
+  exit 1
+fi
+
+for v in `conf-variables`; do
+  export $v=`conf-get $v`
+done
+env-save SSH_ED25519_PUB
+env-save SSH_ED25519_KEY
+
+script="$ROOTDIR/modules/$1"
+shift
+
+# Defaults.
+main() {
+  true
+}
+parse_args() {
+  true
+}
+prepare() {
+  true
+}
+cleanup() {
+  true
+}
+
+. $script
+log-debug "Parsing arguments in docker for $script $@"
+if ! parse_args "$@"; then
+  color-print error "Usage:\n`usage`"
+  error-exit INVALID_ARGS "$*"
+else
+  log-debug "Running main $script in docker."
+  main
+fi

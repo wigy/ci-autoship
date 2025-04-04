@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# Save special environtment variable inside the docker environment.
+#
+#   env-save <name>
+#
+
+set -e
+
+case $1 in
+  SSH_ED25519_PUB)
+    if [[ ! -d ~/.ssh ]]; then
+      mkdir -p ~/.ssh
+      chmod 700 ~/.ssh
+    fi
+    echo "$SSH_ED25519_PUB" > ~/.ssh/id_ed25519.pub
+  ;;
+  SSH_ED25519_KEY)
+    if [[ ! -d ~/.ssh ]]; then
+      mkdir -p ~/.ssh
+      chmod 700 ~/.ssh
+    fi
+    echo "$SSH_ED25519_KEY" > ~/.ssh/id_ed25519
+    chmod 600 ~/.ssh/id_ed25519
+  ;;
+
+  *)
+    error-exit INVALID_ARGS "Don't know how to save env '$1'."
+  ;;
+esac

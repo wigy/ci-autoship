@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Exit with an error.
+#
+#   error-exit <code> <text>
+#
+
+set -e
+
+case "$1" in
+  INVALID_ARGS)
+    log-error "Invalid arguments: $2" >&2
+    exit 1
+    ;;
+  NOT_FOUND)
+    log-error "Not found: $2" >&2
+    exit 2
+    ;;
+  NOT_IMPLEMENTED)
+    log-error "Not implemented: $2" >&2
+    exit 3
+    ;;
+  ALREADY_EXISTS)
+    log-error "Already exists: $2" >&2
+    exit 4
+    ;;
+  *)
+    log-error "Invalid error code given to error-exit: $1 $2" >&2
+    exit 99
+    ;;
+esac

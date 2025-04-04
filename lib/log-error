@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# Log an error with timestamp.
+#
+#   log-error <text>
+#
+
+color-print error "`date +'%F %T'`: $*"

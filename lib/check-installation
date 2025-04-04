@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# Verify that installation is ready to be used.
+#
+
+set -e
+
+# Initialize .autoship
+if [[ ! -f "$WORKDIR/.autoship/config" ]]; then
+  # Ensure essential binaries needed.
+  for bin in git grep sed head tail docker basename dirname find jq; do
+    if ! $bin --version > /dev/null 2>&1; then
+      error-exit NOT_FOUND "Cannot find executable '$bin', which is needed for autoship functionality."
+    fi
+  done
+
+  if question-yesno "There is no configuration file $WORKDIR/.autoship/config.\nShould we create one?" yes; then
+    mkdir -p "$WORKDIR/.autoship"
+    touch "$WORKDIR/.autoship/config"
+    echo "#" >> "$WORKDIR/.autoship/config"
+    echo "# CI Autoship Project Configuration" >> "$WORKDIR/.autoship/config"
+    echo "#" >> "$WORKDIR/.autoship/config"
+    log-info "$WORKDIR/.autoship/config created."
+    if [[ "$MODE" == devel ]]; then
+      log-info "Enabling local development repository."
+      mkdir -p "$WORKDIR/.autoship/repos/local"
+      touch "$WORKDIR/.autoship/repos/local/config"
+      echo "#" >> "$WORKDIR/.autoship/repos/local/config"
+      echo "# CI Autoship Repo Configuration" >> "$WORKDIR/.autoship/repos/local/config"
+      echo "#" >> "$WORKDIR/.autoship/repos/local/config"
+      log-info "$WORKDIR/.autoship/repos/local/config created."
+    fi
+  fi
+
+  # If .gitignore found, ask for adding.
+  if [[ -f "$WORKDIR/.gitignore" ]]; then
+    if ! grep -q \.autoship "$WORKDIR/.gitignore"; then
+      if question-yesno "There is a file $WORKDIR/.gitignore.\nShould we add .autoship there?" yes; then
+        echo >> "$WORKDIR/.gitignore"
+        echo '.autoship/' >> "$WORKDIR/.gitignore"
+      fi
+    fi
+  fi
+fi
+if [[ ! -f "$WORKDIR/.autoship/config" ]]; then
+  error-exit NOT_FOUND "Cannot continue without configuration file."
+fi
+
+# Ensure that we have PROJECT.
+if [[ "`conf-get PROJECT`" == '' ]]; then
+  proposal=`basename $WORKDIR | sed -e 's/[^a-z0-9_]/_/g'`
+  name=`question-symbol "We need unique name for the project in this computer (only a-z 0-9 and _ allowed)." "$proposal"`
+  log-info "Project name set to '$name'."
+  conf-set PROJECT "$name"
+fi

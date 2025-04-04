@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Create new repository to the project.
+#
+#   repo-create <url> [<branch>]
+#
+
+set -e
+
+cd $WORKDIR/.autoship/
+name=`basename $1 .git`
+if [[ -d "repos/$name" ]]; then
+  error-exit ALREADY_EXISTS "The repository '$name' already exists."
+fi
+
+if [[ -z "$2" ]]; then
+  branch=master
+else
+  branch="$2"
+fi
+
+mkdir -p "repos/$name/branches"
+cd "repos/$name/branches"
+
+git clone $1 $branch
+
+cd ..
+touch config
+echo "#" >> "config"
+echo "# CI Autoship Repository Configuration" >> "config"
+echo "#" >> "config"

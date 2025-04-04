@@ -1,0 +1,96 @@
+#!/bin/bash
+#
+# Find and execute steps of a task.
+#
+#   run-task <name> [<arg>...]
+#
+
+# TODO: Rename as task-run
+
+set -e
+
+log-debug "Running task $* in $PLATFORM."
+
+. env-find SSH_ED25519_PUB
+. env-find SSH_ED25519_KEY
+
+# Find the task
+if ls "$ROOTDIR/modules/"*/$1.sh > /dev/null 2>&1; then
+  script=`ls "$ROOTDIR/modules/"*/$1.sh`
+  module_dir=`dirname $script`
+  module=`basename $module_dir`
+  script=`basename $script`
+  shift
+else
+  error-exit NOT_FOUND "There is no such task as '$1'."
+fi
+
+# Set up the docker container.
+image="ci-autoship:$PROJECT"
+if [[ "$PLATFORM" = local ]]; then
+  if ! docker image ls | grep "^ci-autoship *$PROJECT" > /dev/null; then
+    if ! docker image ls | grep "^ci-autoship *local" > /dev/null ; then
+      log-info "Building CI Autoship docker image."
+      docker build -t ci-autoship:local "$ROOTDIR/docker"
+      log-info "Docker image completed."
+    fi
+    log-info "Tagging image as $image."
+    docker tag ci-autoship:local $image
+  fi
+fi
+
+# Load script and set default functionality.
+prepare() {
+  true
+}
+parse_args() {
+  true
+}
+main() {
+  true
+}
+cleanup() {
+  true
+}
+. "$ROOTDIR/modules/$module/$script"
+
+# Preparation step.
+log-debug "Parsing arguments $module/$script $@"
+if ! parse_args "$@"; then
+  color-print error "Usage:\n`usage`"
+  error-exit INVALID_ARGS "$*"
+fi
+log-debug "Preparing $module/$script $@"
+prepare
+
+# Set runtime variables, if needed.
+if [[ ! -z "$REPO" ]]; then
+  RUNTIME_CONFIG="--env-file $WORKDIR/.autoship/repos/$REPO/config"
+fi
+
+# Execute main program.
+if [[ "$PLATFORM" = local ]]; then
+  log-debug "Executing in docker container $image run-docker-task $module/$script $@"
+  docker run -it \
+    $RUNTIME_CONFIG \
+    --env-file "$WORKDIR/.autoship/config" \
+    -v"$WORKDIR":/home/work \
+    -v"$WORKDIR"/.autoship:/home/work/.autoship \
+    -v"$ROOTDIR":/home/root \
+    -e DEBUG=$DEBUG \
+    -e REPO=$REPO \
+    -e BRANCH=$BRANCH \
+    -e PLATFORM=docker \
+    -e SSH_ED25519_PUB="$SSH_ED25519_PUB" \
+    -e SSH_ED25519_KEY="$SSH_ED25519_KEY" \
+    $image /home/root/docker/run-docker-task $module/$script "$@"
+else
+  main
+fi
+
+# TODO: successs hook inside docker.
+# TODO: failure hook inside docker.
+
+# Cleanup.
+log-debug "Cleaning up $module/$script $@"
+cleanup

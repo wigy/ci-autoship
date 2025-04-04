@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Log text with timestamp, but only if DEBUG set.
+#
+#   log-debug <text>
+#
+
+if [[ ! -z "$DEBUG" ]]; then
+  color-print debug "`date +'%F %T'`: $*"
+fi

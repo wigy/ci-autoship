@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# List module names available.
+#
+#   modulule-list
+#
+
+set -e
+
+modules=()
+for module in $ROOTDIR/modules/*; do
+  modules+=("`basename $module`")
+done
+
+echo ${modules[@]}

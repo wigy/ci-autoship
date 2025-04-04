@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# List module names available.
+#
+#   modulule-list
+#
+
+set -e
+
+tasks=()
+for module in $ROOTDIR/modules/*/*.sh; do
+  module_dir=`dirname $module`
+  tasks+=("`basename $module .sh`")
+done
+
+echo ${tasks[@]}

@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# Print a question and wait for a string to be answered.
+#
+#   question-dir <text> [<default>]
+#
+
+set -e
+
+while true; do
+  color-print question $1 >&2
+  if [[ ! -z "$2" ]]; then
+    color-print question Press enter to accept the default. >&2
+    color-print prompt "[$2]" >&2
+  fi
+  read ans
+
+  if [[ -z "$ans" ]]; then
+    result=$2
+  else
+    result=$ans
+  fi
+
+  if [[ ! -z "$result" ]]; then
+    echo $result
+    exit
+  else
+    color-print error "Must enter non-empty string." >&2
+  fi
+done

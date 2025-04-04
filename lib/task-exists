@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# Check if the task exists as its return value.
+#
+#   task-exist <task>
+#
+
+set -e
+
+if ls $ROOTDIR/modules/*/$1.sh > /dev/null 2>&1; then
+  exit 0
+else
+  exit 1
+fi
