@@ -33,6 +33,10 @@ During the execution the following environment variables gets set:
 * `ROOTDIR` - The directory containing CI Autoship code.
 * `WORKDIR` - The root directory of the working project.
 
+## Top Level Configuration
+
+* `PROJECT` - Symbolic name of the project.
+
 ## Testing
 
 To run self test

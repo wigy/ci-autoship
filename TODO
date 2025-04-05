@@ -3,4 +3,3 @@
 - Pipelines, i.e. list of tasks to run (project specific).
 - Success-script.
 - Failure-script.
-- Rebuild command to rebuild container.
