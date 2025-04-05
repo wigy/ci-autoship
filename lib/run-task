@@ -65,14 +65,13 @@ prepare
 
 # Set runtime variables, if needed.
 if [[ ! -z "$REPO" ]]; then
-echo REPO$REPO
   RUNTIME_CONFIG="--env-file $WORKDIR/.autoship/repos/$REPO/config"
 fi
 
 # Execute main program.
 if [[ "$PLATFORM" = local ]]; then
   log-debug "Executing in docker container $image run-docker-task $module/$script $@"
-  docker run -it \
+  if docker run -it \
     $RUNTIME_CONFIG \
     --env-file "$WORKDIR/.autoship/config" \
     -v"$WORKDIR":/home/work \
@@ -85,6 +84,11 @@ if [[ "$PLATFORM" = local ]]; then
     -e SSH_ED25519_PUB="$SSH_ED25519_PUB" \
     -e SSH_ED25519_KEY="$SSH_ED25519_KEY" \
     $image /home/root/docker/run-docker-task $module/$script "$@"
+  then
+    log-debug "Task $image run-docker-task $module/$script $@: SUCCESS."
+  else
+    log-debug "Task $image run-docker-task $module/$script $@: FAIL."
+  fi
 else
   main
 fi

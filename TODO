@@ -1,5 +1,3 @@
 - Automatically find repo based on NODE_ variables in config.
 - If no repos found, explain how to configure one.
 - Pipelines, i.e. list of tasks to run (project specific).
-- Success-script.
-- Failure-script.

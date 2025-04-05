@@ -11,9 +11,18 @@ usage() {
 }
 
 prepare() {
-  echo "DUMMY $PLATFORM prepare()"
+  echo "DUMMY function prepare()"
+}
+
+fail() {
+  echo "We failed nicely!"
+}
+
+success() {
+  echo "We succeeded nicely!"
 }
 
 main() {
-  echo "DUMMY $PLATFORM main()"
+  echo "DUMMY function main()"
+  #error-exit NOT_FOUND "Just testing"
 }

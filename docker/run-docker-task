@@ -40,6 +40,12 @@ prepare() {
 cleanup() {
   true
 }
+success() {
+  true
+}
+fail() {
+  false
+}
 
 . $script
 log-debug "Parsing arguments in docker for $script $@"
@@ -48,5 +54,9 @@ if ! parse_args "$@"; then
   error-exit INVALID_ARGS "$*"
 else
   log-debug "Running main $script in docker."
-  main
+  if main; then
+    success
+  else
+    fail
+  fi
 fi
