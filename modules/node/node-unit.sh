@@ -42,6 +42,9 @@ prepare() {
 
   NODE_UNIT_CMD=`repo-conf-get "$REPO" NODE_UNIT_CMD`
   if [[ -z "$NODE_UNIT_CMD" ]]; then
+    if [[ ! -f package.json ]]; then
+      error-exit NOT_FOUND "Cannot find package.json. Please define NODE_UNIT_CMD manually."
+    fi
     cmd=`jq -r '.scripts.test' < package.json`
     if [[ "$cmd" == null ]]; then
       cmd=''

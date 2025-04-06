@@ -13,12 +13,21 @@ if [[ ! -z "$REPO" ]]; then
     export BRANCH=master
   fi
 else
-  # TODO: Use env hint.
+  if [[ -z "`repo-list`" ]]; then
+    error-exit NOT_FOUND "There are not any repositories."
+  fi
   if [[ ! `repo-list` =~ ' ' ]]; then
     export REPO=`repo-list`
     export BRANCH=master
   else
-    error-exit NOT_FOUND "Cannot find a repository and/or branch for working (maybe define env REPO and BRANCH)."
+    if grep -q "$1" "$WORKDIR/.autoship/repos"/*/config; then
+      repo=`grep -l "$1" "$WORKDIR/.autoship/repos"/*/config | head -n 1`
+      repo=`dirname "$repo"`
+      export REPO=`basename "$repo"`
+      export BRANCH=master
+    else
+      error-exit NOT_FOUND "Cannot find a repository and/or branch for working (maybe define env REPO and BRANCH)."
+    fi
   fi
 fi
 

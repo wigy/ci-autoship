@@ -1,3 +1,2 @@
-- Automatically find repo based on NODE_ variables in config.
-- If no repos found, explain how to configure one.
+- lint
 - Pipelines, i.e. list of tasks to run (project specific).
