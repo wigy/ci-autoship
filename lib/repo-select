@@ -14,8 +14,12 @@ if [[ ! -z "$REPO" ]]; then
   fi
 else
   # TODO: Use env hint.
-  # TODO: Make assumption if only one repo.
-  error-exit NOT_FOUND "Cannot find a repository and/or branch for working (maybe define env REPO and BRANCH)."
+  if [[ ! `repo-list` =~ ' ' ]]; then
+    export REPO=`repo-list`
+    export BRANCH=master
+  else
+    error-exit NOT_FOUND "Cannot find a repository and/or branch for working (maybe define env REPO and BRANCH)."
+  fi
 fi
 
 # Check existence.
