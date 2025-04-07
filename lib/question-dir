@@ -13,7 +13,13 @@ while true; do
     color-print question Press enter to accept the default. >&2
     color-print prompt "[$2]" >&2
   fi
-  read ans
+
+  if [[ "$AUTOANSWER" == default ]]; then
+    color-print prompt ">$default" >&2
+    ans=$default
+  else
+    read ans
+  fi
 
   if [[ -z "$ans" ]]; then
     result=$2

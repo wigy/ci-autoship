@@ -30,7 +30,12 @@ while true; do
     ;;
   esac
 
-  read ans
+  if [[ "$AUTOANSWER" == default ]]; then
+    color-print prompt ">$default" >&2
+    ans=$default
+  else
+    read ans
+  fi
 
   if [[ -z "$ans" ]]; then
     ans=$default

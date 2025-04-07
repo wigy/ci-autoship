@@ -13,7 +13,8 @@ run() {
   rm -fr $WORKDIR/.autoship
   set -x
   cd $WORKDIR
-  ./ci > /dev/null
+
+  AUTOANSWER=default ./ci > /dev/null
   [[ -f .autoship/config ]]
   [[ -f .autoship/repos/local/config ]]
   ./ci help > /dev/null

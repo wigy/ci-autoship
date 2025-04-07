@@ -1,5 +1,4 @@
 - Pipelines, i.e. list of tasks to run (project specific).
 - Shared NODE_PACKAGE_MANAGER setting.
-- Autoanswering defaults for testing purposes.
 - Test for node-lint (add demo dir to this repo)
 - Test for node-unit (add demo dir to this repo)
