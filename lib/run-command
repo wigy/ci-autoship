@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+# Log the command line and run a command.
+#
+#   run-command <command> [<arg>...]
+#
+
+color-print command "`date +'%F %T'` Running $*" >&2
+$*

@@ -24,5 +24,4 @@ success() {
 
 main() {
   echo "DUMMY function main()"
-  #error-exit NOT_FOUND "Just testing"
 }

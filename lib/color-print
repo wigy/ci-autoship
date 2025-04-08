@@ -23,7 +23,7 @@ case "$1" in
     shift
     echo $N "\e[33m$*\e[0m"
     ;;
-  yellow|question|code)
+  yellow|question|code|command)
     shift
     echo $N "\e[0;93m$*\e[0m"
     ;;
