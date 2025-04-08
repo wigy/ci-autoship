@@ -2,6 +2,8 @@
 
 set -e
 
+. "$ROOTDIR/modules/node/common"
+
 summary() {
   echo 'Run linting for Node.'
 }
@@ -37,6 +39,9 @@ prepare() {
     repo-conf-set $REPO NODE_LINT_DIR "$NODE_LINT_DIR"
   fi
 
+  # Set package manager.
+  node_package_manager
+
   # Resolve command.
   cd "$NODE_LINT_DIR"
 
@@ -49,7 +54,7 @@ prepare() {
     if [[ "$cmd" == null ]]; then
       cmd=''
     else
-      cmd="yarn lint"
+      cmd="$NODE_PACKAGE_MANAGER lint"
     fi
     NODE_LINT_CMD=`question-str "Enter a command to execute linting" "$cmd"`
     repo-conf-set $REPO NODE_LINT_CMD "$NODE_LINT_CMD"
@@ -62,6 +67,6 @@ prepare() {
 main() {
   cd "$WORKDIR"/.autoship/repos/$REPO/branches/$BRANCH
   cd $NODE_LINT_DIR
-  yarn install # TODO: Configure NODE_PACKAGE_MANAGER and use everywhere where 'yarn' referenced.
+  $NODE_PACKAGE_MANAGER install
   $NODE_LINT_CMD
 }

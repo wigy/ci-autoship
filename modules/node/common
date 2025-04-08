@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+#
+# Resolve package manager. Requires $REPO setting.
+#
+node_package_manager() {
+  local pm
+  NODE_PACKAGE_MANAGER=`repo-conf-get "$REPO" NODE_PACKAGE_MANAGER`
+  if [[ -z "$NODE_PACKAGE_MANAGER" ]]; then
+    if pnpm --version > /dev/null 2>&1; then
+      pm=pnpm
+    else
+      if yarn --version > /dev/null 2>&1; then
+        pm=yarn
+      else
+        pm npm
+      fi
+    fi
+
+    NODE_PACKAGE_MANAGER=`question-str "What is your Node package manager" "$pm"`
+    repo-conf-set $REPO NODE_PACKAGE_MANAGER "$NODE_PACKAGE_MANAGER"
+  fi
+
+  export NODE_PACKAGE_MANAGER
+}

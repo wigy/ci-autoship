@@ -2,6 +2,8 @@
 
 set -e
 
+. "$ROOTDIR/modules/node/common"
+
 summary() {
   echo 'Run unit tests for Node.'
 }
@@ -37,6 +39,9 @@ prepare() {
     repo-conf-set $REPO NODE_UNIT_DIR "$NODE_UNIT_DIR"
   fi
 
+  # Set package manager.
+  node_package_manager
+
   # Resolve command.
   cd "$NODE_UNIT_DIR"
 
@@ -49,7 +54,7 @@ prepare() {
     if [[ "$cmd" == null ]]; then
       cmd=''
     else
-      cmd="yarn test"
+      cmd="$NODE_PACKAGE_MANAGER test"
     fi
     NODE_UNIT_CMD=`question-str "Enter a command to execute unit tests" "$cmd"`
     repo-conf-set $REPO NODE_UNIT_CMD "$NODE_UNIT_CMD"
@@ -62,6 +67,6 @@ prepare() {
 main() {
   cd "$WORKDIR"/.autoship/repos/$REPO/branches/$BRANCH
   cd $NODE_UNIT_DIR
-  yarn install # TODO: Configure NODE_PACKAGE_MANAGER
+  $NODE_PACKAGE_MANAGER install
   $NODE_UNIT_CMD
 }
