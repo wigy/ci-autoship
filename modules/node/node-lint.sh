@@ -34,7 +34,7 @@ prepare() {
       error-exit NOT_FOUND "Unable to find any directory with package.json file."
     fi
     local_path=`dirname ${package_json/"$WORKDIR/.autoship/repos/$REPO/branches/$BRANCH/"}`
-    NODE_LINT_DIR=`question-dir "Select linting directory (type '.' for root dir)" "$local_path"`
+    NODE_LINT_DIR=`question-dir "Select linting directory from repo root (type '.' for root dir)" "$local_path"`
 
     repo-conf-set $REPO NODE_LINT_DIR "$NODE_LINT_DIR"
   fi

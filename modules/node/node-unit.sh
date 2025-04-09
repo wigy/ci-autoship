@@ -34,7 +34,7 @@ prepare() {
       error-exit NOT_FOUND "Unable to find any directory with package.json file."
     fi
     local_path=`dirname ${package_json/"$WORKDIR/.autoship/repos/$REPO/branches/$BRANCH/"}`
-    NODE_UNIT_DIR=`question-dir "Select unit-test directory (type '.' for root dir)" "$local_path"`
+    NODE_UNIT_DIR=`question-dir "Select unit-test directory from root (type '.' for root dir)" "$local_path"`
 
     repo-conf-set $REPO NODE_UNIT_DIR "$NODE_UNIT_DIR"
   fi
