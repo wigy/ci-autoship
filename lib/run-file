@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# Run and execute a task list from a file.
+#
+#   run-file <path>
+#
+
+set -e
+
+if [[ ! -f "$1" ]]; then
+  error-exit NOT_FOUND "Cannot find the task list '$1'."
+fi
+
+lines=()
+while IFS= read -r line; do
+  if [[ $line =~ ^# ]]; then
+    continue
+  fi
+  if [[ $line =~ ^\s*$ ]]; then
+    continue
+  fi
+  if [[ $line =~ ^[A-Z]+= ]]; then
+    var=`echo $line | sed -e 's/=.*//'`
+    val=`echo $line | sed -e 's/^[A-Z]\+=//'`
+    export $var=$val
+    continue
+  fi
+
+  lines+=("$line")
+done < $1
+
+for line in "${lines[@]}"; do
+    run-task $line
+done
