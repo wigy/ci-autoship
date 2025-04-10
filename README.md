@@ -21,7 +21,17 @@ the first run.
 
 ## Phases of the Task Run
 
-TODO: Write.
+In the `modules` directory there are tasks with `.ts` extension. When any of those tasks given as an
+argument to `./ci`, it will be exacuted. The execution has steps that can be defined in the task file.
+Steps are executed in the following order:
+1. `parse_args()` - This function can verify that task arguments are correctly given.
+2. `prepare()` - This function is executed in outside of the docker and in can set up and validate
+                 an environment needed for the task.
+3. `main()` - Actual task that is executed inside the docker containing many useful tools. Working directory
+              is mounted there and environment defined from `prepare()` function.
+4. `success()` or `fail()` - Either of these functions are executed inside the docker depending on the
+                             result of the `main()` function.
+4. `cleanup()` - This is executed outside the docker as the last step.
 
 ## Environment Variables in Scripts
 

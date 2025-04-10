@@ -91,9 +91,6 @@ else
   main
 fi
 
-# TODO: successs hook inside docker.
-# TODO: failure hook inside docker.
-
 # Cleanup.
 log-debug "Cleaning up $module/$script $@"
 cleanup

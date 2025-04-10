@@ -3,7 +3,6 @@
 # This is the entry point for CI Autoship. Link it to the root directory of your project or use directly.
 #
 
-# TODO: This does not resolve correcly.
 current_ci_script=`dirname "${BASH_SOURCE[0]}"`
 export WORKDIR=`realpath "$current_ci_script"`
 
