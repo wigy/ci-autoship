@@ -13,8 +13,8 @@ log-debug "Running task $* in $PLATFORM."
 . env-find SSH_ED25519_PUB
 . env-find SSH_ED25519_KEY
 
-if [[ -f "$WORKDIR/autoship/$1.sh" ]]; then
-  file="$WORKDIR/autoship/$1.sh"
+if [[ -f "$WORKDIR/autoship/$1.ship" ]]; then
+  file="$WORKDIR/autoship/$1.ship"
   shift
   if [[ ! -z "$*" ]]; then
     error-exit INVALID_ARGS "Arguments not supported for custom scripts."
