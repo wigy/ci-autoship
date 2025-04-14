@@ -11,10 +11,19 @@ if ls $WORKDIR/.autoship/repos/$1/config > /dev/null 2>&1; then
   if [[ -z "$2" ]]; then
     exit 0
   else
-    if ls $WORKDIR/.autoship/repos/$1/branches/$2 > /dev/null 2>&1; then
-      exit 0
+    if [[ "$1" == local ]]; then
+      cd "$WORKDIR"
+      if git branch | sed -e 's/^..//' | grep "^$2$" > /dev/null; then
+        exit 0
+      else
+        exit 1
+      fi
     else
-      exit 1
+      if ls $WORKDIR/.autoship/repos/$1/branches/$2 > /dev/null 2>&1; then
+        exit 0
+      else
+        exit 1
+      fi
     fi
   fi
 else

@@ -1,0 +1,1 @@
+[ ] cd "$WORKDIR"/.autoship/repos/$REPO/branches/$BRANCH and local repo: repo-cd
