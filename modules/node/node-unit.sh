@@ -24,7 +24,7 @@ prepare() {
 
   . repo-select NODE_
 
-  cd "$WORKDIR"/.autoship/repos/$REPO/branches/$BRANCH
+  cd "$TARGET"
 
   # Resolve test directory.
   NODE_UNIT_DIR=`repo-conf-get "$REPO" NODE_UNIT_DIR`
@@ -33,7 +33,7 @@ prepare() {
     if [[ -z "$package_json" ]]; then
       error-exit NOT_FOUND "Unable to find any directory with package.json file."
     fi
-    local_path=`dirname ${package_json/"$WORKDIR/.autoship/repos/$REPO/branches/$BRANCH/"}`
+    local_path=`dirname ${package_json/"$TARGET/"}`
     NODE_UNIT_DIR=`question-dir "Select unit-test directory from root (type '.' for root dir)" "$local_path"`
 
     repo-conf-set $REPO NODE_UNIT_DIR "$NODE_UNIT_DIR"

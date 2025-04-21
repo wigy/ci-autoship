@@ -71,9 +71,10 @@ else
   log-debug "Preparing $module/$script $@"
   prepare
 
-  # Set runtime variables, if needed.
+  # Set some runtime variables.
   if [[ ! -z "$REPO" ]]; then
     RUNTIME_CONFIG="--env-file $WORKDIR/.autoship/repos/$REPO/config"
+    export TARGET="$WORKDIR"/.autoship/repos/$REPO/branches/${BRANCH:-master}
   fi
 
   # Execute main program.
@@ -88,6 +89,7 @@ else
       -e DEBUG=$DEBUG \
       -e REPO=$REPO \
       -e BRANCH=$BRANCH \
+      -e TARGET=$TARGET \
       -e PLATFORM=docker \
       -e SSH_ED25519_PUB="$SSH_ED25519_PUB" \
       -e SSH_ED25519_KEY="$SSH_ED25519_KEY" \

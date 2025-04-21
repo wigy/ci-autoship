@@ -8,6 +8,7 @@ set -e
 export WORKDIR=/home/work
 export ROOTDIR=/home/root
 export DATADIR=/home/data
+export TARGET="$WORKDIR"/.autoship/repos/$REPO/branches/${BRANCH:-master}
 
 export PATH="$ROOTDIR/lib:$PATH"
 

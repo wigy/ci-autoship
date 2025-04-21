@@ -24,16 +24,17 @@ prepare() {
 
   . repo-select NODE_
 
-  cd "$WORKDIR"/.autoship/repos/$REPO/branches/$BRANCH
+  cd "$TARGET"
 
   # Resolve test directory.
   NODE_LINT_DIR=`repo-conf-get "$REPO" NODE_LINT_DIR`
+
   if [[ -z "$NODE_LINT_DIR" ]]; then
     package_json=`find "$WORKDIR" -name 'package.json' | head -n 1`
     if [[ -z "$package_json" ]]; then
       error-exit NOT_FOUND "Unable to find any directory with package.json file."
     fi
-    local_path=`dirname ${package_json/"$WORKDIR/.autoship/repos/$REPO/branches/$BRANCH/"}`
+    local_path=`dirname ${package_json/"$TARGET/"}`
     NODE_LINT_DIR=`question-dir "Select linting directory from repo root (type '.' for root dir)" "$local_path"`
 
     repo-conf-set $REPO NODE_LINT_DIR "$NODE_LINT_DIR"
@@ -65,7 +66,7 @@ prepare() {
 }
 
 main() {
-  cd "$WORKDIR"/.autoship/repos/$REPO/branches/$BRANCH
+  cd "$TARGET"
   cd $NODE_LINT_DIR
   run-command $NODE_PACKAGE_MANAGER install
   run-command $NODE_LINT_CMD
