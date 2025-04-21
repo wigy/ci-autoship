@@ -24,13 +24,9 @@ prepare() {
 
   cd "$TARGET"
 
-  # Resolve test directory.
   node_resolve_dir NODE_UNIT_DIR "Select unit-test directory from root"
-
-  # Set package manager.
   node_package_manager
 
-  # Resolve command.
   cd "$NODE_UNIT_DIR"
 
   node_resolve_cmd NODE_UNIT_CMD "Enter a command to execute unit tests" test

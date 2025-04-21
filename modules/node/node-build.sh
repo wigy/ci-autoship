@@ -5,11 +5,11 @@ set -e
 . "$ROOTDIR/modules/node/common"
 
 summary() {
-  echo 'Run linting for Node.'
+  echo 'Run build for Node.'
 }
 
 usage() {
-  echo 'node-lint'
+  echo 'node-build'
 }
 
 parse_args() {
@@ -26,20 +26,20 @@ prepare() {
 
   cd "$TARGET"
 
-  node_resolve_dir NODE_LINT_DIR "Select linting directory from repo root"
+  node_resolve_dir NODE_BUILD_DIR "Select linting directory from repo root"
   node_package_manager
 
-  cd "$NODE_LINT_DIR"
+  cd "$NODE_BUILD_DIR"
 
-  node_resolve_cmd NODE_LINT_CMD "Enter a command to execute linting" lint
+  node_resolve_cmd NODE_BUILD_CMD "Enter a command to execute linting" build
 
-  export NODE_LINT_DIR
-  export NODE_LINT_CMD
+  export NODE_BUILD_DIR
+  export NODE_BUILD_CMD
 }
 
 main() {
   cd "$TARGET"
-  cd $NODE_LINT_DIR
+  cd $NODE_BUILD_DIR
   run-command $NODE_PACKAGE_MANAGER install
-  run-command $NODE_LINT_CMD
+  run-command $NODE_BUILD_CMD
 }

@@ -24,13 +24,9 @@ prepare() {
 
   cd "$TARGET"
 
-  # Resolve test directory.
   node_resolve_dir NODE_I18N_DIR "Select directory with i18n files from root"
-
-  # Set package manager.
   node_package_manager
 
-  # Resolve command.
   cd "$NODE_I18N_DIR"
 
   node_resolve_cmd NODE_I18N_CMD "Enter a command to build and/or lint i18n files" i18n
