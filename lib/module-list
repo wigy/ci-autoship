@@ -2,7 +2,7 @@
 #
 # List module names available.
 #
-#   modulule-list
+#   module-list
 #
 
 set -e

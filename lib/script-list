@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# List custom scripts found.
+#
+#   file-list
+#
+
+set -e
+
+scripts=()
+if ls "$WORKDIR"/autoship/*.ship > /dev/null 2>&1; then
+  for script in "$WORKDIR"/autoship/*.ship; do
+    scripts+=("`basename $script .ship`")
+  done
+fi
+echo ${scripts[@]}

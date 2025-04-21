@@ -20,6 +20,7 @@ parse_args() {
 prepare() {
   local module
   local task
+  local scripts
 
   if [[ "$TASK" == '' ]]; then
     color-print title
@@ -34,6 +35,15 @@ prepare() {
       done
     done
     color-print text
+
+    scripts=`script-list`
+    if [[ ! -z "$scripts" ]]; then
+      color-print title
+      color-print title "CI Autoship Scripts"
+      color-print title
+      color-print text "    $scripts"
+      color-print text
+    fi
 
     if [[ "`repo-list`" == '' ]]; then
       color-print note '+---------------------------------------------------------------------------+'
