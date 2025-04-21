@@ -26,12 +26,12 @@ prepare() {
 
   cd "$TARGET"
 
-  node_resolve_dir NODE_BUILD_DIR "Select linting directory from repo root"
+  node_resolve_dir NODE_BUILD_DIR "Select building directory from repo root"
   node_package_manager
 
   cd "$NODE_BUILD_DIR"
 
-  node_resolve_cmd NODE_BUILD_CMD "Enter a command to execute linting" build
+  node_resolve_cmd NODE_BUILD_CMD "Enter a command to execute building" build
 
   export NODE_BUILD_DIR
   export NODE_BUILD_CMD
