@@ -65,7 +65,7 @@ prepare() {
 }
 
 main() {
-  cd "$WORKDIR"/.autoship/repos/$REPO/branches/$BRANCH
+  cd "$TARGET"
   cd $NODE_UNIT_DIR
   run-command $NODE_PACKAGE_MANAGER install
   run-command $NODE_UNIT_CMD

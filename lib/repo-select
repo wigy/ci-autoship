@@ -11,7 +11,6 @@ set -e
 if [[ ! -z "$REPO" ]]; then
   if [[ -z "$BRANCH" ]]; then
     export BRANCH=master
-    export TARGET="$WORKDIR"/.autoship/repos/$REPO/branches/master
   fi
 else
   if [[ -z "`repo-list`" ]]; then
@@ -20,14 +19,12 @@ else
   if [[ ! `repo-list` =~ ' ' ]]; then
     export REPO=`repo-list`
     export BRANCH=master
-    export TARGET="$WORKDIR"/.autoship/repos/$REPO/branches/master
   else
     if grep -q "$1" "$WORKDIR/.autoship/repos"/*/config; then
       repo=`grep -l "$1" "$WORKDIR/.autoship/repos"/*/config | head -n 1`
       repo=`dirname "$repo"`
       export REPO=`basename "$repo"`
       export BRANCH=master
-      export TARGET="$WORKDIR"/.autoship/repos/$REPO/branches/master
     else
       error-exit NOT_FOUND "Cannot find a repository and/or branch for working (maybe define env REPO and BRANCH)."
     fi
@@ -41,3 +38,5 @@ fi
 if ! repo-exists $REPO $BRANCH; then
   error-exit NOT_FOUND "There is no branch '$BRANCH' of '$REPO' checked out."
 fi
+
+. set-target

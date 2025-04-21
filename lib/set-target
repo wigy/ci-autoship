@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# Define TARGET based on REPO and BRANCH variables.
+#
+#   . set-target
+#
+
+set -e
+
+if [[ -z "$REPO" ]]; then
+  log-debug "Cannot set TARGET unless we know REPO."
+else
+  if [[ $REPO == local ]]; then
+    export TARGET="$WORKDIR"
+  else
+    export TARGET="$WORKDIR"/.autoship/repos/$REPO/branches/${BRANCH:-master}
+  fi
+fi
