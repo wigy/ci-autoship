@@ -35,20 +35,7 @@ prepare() {
   # Resolve command.
   cd "$NODE_LINT_DIR"
 
-  NODE_LINT_CMD=`repo-conf-get "$REPO" NODE_LINT_CMD`
-  if [[ -z "$NODE_LINT_CMD" ]]; then
-    if [[ ! -f package.json ]]; then
-      error-exit NOT_FOUND "Cannot find package.json. Please define NODE_LINT_CMD manually."
-    fi
-    cmd=`jq -r '.scripts.lint' < package.json`
-    if [[ "$cmd" == null ]]; then
-      cmd=''
-    else
-      cmd="$NODE_PACKAGE_MANAGER lint"
-    fi
-    NODE_LINT_CMD=`question-str "Enter a command to execute linting" "$cmd"`
-    repo-conf-set $REPO NODE_LINT_CMD "$NODE_LINT_CMD"
-  fi
+  node_resolve_cmd NODE_LINT_CMD "Enter a command to execute linting" lint
 
   export NODE_LINT_DIR
   export NODE_LINT_CMD

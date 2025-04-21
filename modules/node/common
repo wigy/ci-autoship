@@ -48,3 +48,30 @@ node_resolve_dir() {
 
   export $name="$value"
 }
+
+#
+# Help to look for configurationfor a command to execute a task.
+#
+node_resolve_cmd() {
+  local name=$1
+  local msg=$2
+  local script=$3
+  local value
+
+  value=`repo-conf-get "$REPO" $name`
+  if [[ -z "$value" ]]; then
+    if [[ ! -f package.json ]]; then
+      error-exit NOT_FOUND "Cannot find package.json. Please define $name manually."
+    fi
+    cmd=`jq -r ".scripts.$script" < package.json`
+    if [[ "$cmd" == null ]]; then
+      cmd=''
+    else
+      cmd="$NODE_PACKAGE_MANAGER $script"
+    fi
+    value=`question-str "$msg" "$cmd"`
+    repo-conf-set $REPO $name "$value"
+  fi
+
+  export $name="$value"
+}

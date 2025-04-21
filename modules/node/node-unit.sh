@@ -19,8 +19,6 @@ parse_args() {
 }
 
 prepare() {
-  local package_json
-  local cmd
 
   . repo-select NODE_
 
@@ -35,20 +33,7 @@ prepare() {
   # Resolve command.
   cd "$NODE_UNIT_DIR"
 
-  NODE_UNIT_CMD=`repo-conf-get "$REPO" NODE_UNIT_CMD`
-  if [[ -z "$NODE_UNIT_CMD" ]]; then
-    if [[ ! -f package.json ]]; then
-      error-exit NOT_FOUND "Cannot find package.json. Please define NODE_UNIT_CMD manually."
-    fi
-    cmd=`jq -r '.scripts.test' < package.json`
-    if [[ "$cmd" == null ]]; then
-      cmd=''
-    else
-      cmd="$NODE_PACKAGE_MANAGER test"
-    fi
-    NODE_UNIT_CMD=`question-str "Enter a command to execute unit tests" "$cmd"`
-    repo-conf-set $REPO NODE_UNIT_CMD "$NODE_UNIT_CMD"
-  fi
+  node_resolve_cmd NODE_UNIT_CMD "Enter a command to execute unit tests" test
 
   export NODE_UNIT_DIR
   export NODE_UNIT_CMD
