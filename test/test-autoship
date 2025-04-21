@@ -25,6 +25,9 @@ run() {
   ./ci rebuild-docker > /dev/null
   REPO=ci-autoship AUTOANSWER=default ./ci node-lint > /dev/null
   AUTOANSWER=default ./ci node-unit > /dev/null
+  AUTOANSWER=default ./ci node-lint > /dev/null
+  AUTOANSWER=default ./ci node-build > /dev/null
+  AUTOANSWER=default ./ci apidoc-build > /dev/null
 
   set +x
   echo
